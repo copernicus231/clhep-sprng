@@ -74,7 +74,8 @@ am_libCLHEP_Random_@VERSION@_a_OBJECTS = DoubConv.$(OBJEXT) \
 	RandPoissonT.$(OBJEXT) RandStudentT.$(OBJEXT) \
 	RanecuEngine.$(OBJEXT) Ranlux64Engine.$(OBJEXT) \
 	RanluxEngine.$(OBJEXT) RanshiEngine.$(OBJEXT) \
-	StaticRandomStates.$(OBJEXT) TripleRand.$(OBJEXT)
+	StaticRandomStates.$(OBJEXT) TripleRand.$(OBJEXT) \
+	SprngRandom.$(OBJEXT)
 libCLHEP_Random_@VERSION@_a_OBJECTS =  \
 	$(am_libCLHEP_Random_@VERSION@_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/Random
@@ -175,7 +176,7 @@ build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
 exec_prefix = @exec_prefix@
-host = @host@
+host = @host@@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SprngRandom.Po@am__quote@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
@@ -239,7 +240,8 @@ libCLHEP_Random_@VERSION@_a_SOURCES = \
 	RanluxEngine.cc	\
 	RanshiEngine.cc	\
 	StaticRandomStates.cc \
-	TripleRand.cc
+	TripleRand.cc \
+	SprngRandom.cc
 
 libCLHEP_Random_@VERSION@_so_OBJECTS = $(patsubst %.cc,$(shareddir)/%.$(OBJEXT),$(libCLHEP_Random_@VERSION@_a_SOURCES))
 
@@ -357,6 +359,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Ranlux64Engine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RanluxEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RanshiEngine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SprngRandom.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StaticRandomStates.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TripleRand.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/engineIDulong.Po@am__quote@

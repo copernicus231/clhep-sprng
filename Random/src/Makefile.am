@@ -44,7 +44,8 @@ libCLHEP_Random_@VERSION@_a_SOURCES = \
 	RanluxEngine.cc	\
 	RanshiEngine.cc	\
 	StaticRandomStates.cc \
-	TripleRand.cc
+	TripleRand.cc \
+	SprngRandom.cc
 
 libCLHEP_Random_@VERSION@_so_OBJECTS = $(patsubst %.cc,$(shareddir)/%.$(OBJEXT),$(libCLHEP_Random_@VERSION@_a_SOURCES))
 

@@ -63,6 +63,7 @@ pkginclude_HEADERS = \
 	RanluxEngine.h	\
 	RanshiEngine.h	\
 	SeedTable.h	\
+	SprngRandom.h \
 	Stat.h	\
 	StaticRandomStates.h	\
 	TripleRand.h	\
