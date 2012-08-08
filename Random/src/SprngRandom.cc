@@ -16,7 +16,7 @@
 #include "CLHEP/Random/SprngRandom.h"
 #include "CLHEP/Random/engineIDulong.h"
 
-#include <string.h>	// for strcmp
+
 #include <cmath>
 #include <cstdlib>
 #include "sprng_cpp.h"
@@ -80,9 +80,34 @@ void SprngRandom::setSeeds(const long *seeds, int dum) {
 }
 
 void SprngRandom::saveStatus(const char filename[]) const {
+	FILE *fp;
+	char *bytes;
+	int size;
+	fp = fopen(filename,"w");
+	if(fp == NULL){
+		std::cerr << "  -- Error Saving SprngRandom status\n";
+		return;
+	}
+	size = engine->pack_sprng(&bytes);	// pack stream state into an array
+	fwrite(&size,1,sizeof(int),fp); // store # of bytes required for storage
+	fwrite(bytes,1,size,fp);      // store stream state
+	fclose(fp);
+	free(bytes);		        // free memory needed to store stream state
 }
 
 void SprngRandom::restoreStatus(const char filename[]) {
+  FILE *fp;
+  int size;
+  char buffer[MAX_PACKED_LENGTH];
+  fp = fopen(filename,"r");
+  if(fp == NULL){
+	 std::cerr << "  -- Engine state remains unchanged\n";
+	 return;
+  }
+  fread(&size,1,sizeof(int),fp);  // size of stored stream state
+  fread(buffer,1,size,fp);	// copy stream state to buffer
+  engine->unpack_sprng(buffer);	// retrieve state of the stream
+  fclose(fp);
 }
 
 void SprngRandom::showStatus() const {
