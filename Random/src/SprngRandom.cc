@@ -80,40 +80,47 @@ void SprngRandom::setSeeds(const long *seeds, int dum) {
 }
 
 void SprngRandom::saveStatus(const char filename[]) const {
-	FILE *fp;
+
 	char *bytes;
-	int size;
-	fp = fopen(filename,"w");
-	if(fp == NULL){
+	int size = 0;
+	std::ofstream outFile( filename, std::ios::out|std::ios::binary) ;
+
+	if(!outFile.is_open()){
 		std::cerr << "  -- Error Saving SprngRandom status\n";
 		return;
 	}
 	size = engine->pack_sprng(&bytes);	// pack stream state into an array
-	fwrite(&size,1,sizeof(int),fp); // store # of bytes required for storage
-	fwrite(bytes,1,size,fp);      // store stream state
-	fclose(fp);
-	free(bytes);		        // free memory needed to store stream state
+	outFile.write((char*)&size,sizeof(int));
+	outFile.write(bytes,size);
+	outFile.close();
 }
 
 void SprngRandom::restoreStatus(const char filename[]) {
-  FILE *fp;
-  int size;
+  std::ifstream inFile( filename, std::ios::in|std::ios::binary);
+  int size = 0;
   char buffer[MAX_PACKED_LENGTH];
-  fp = fopen(filename,"r");
-  if(fp == NULL){
+
+  if(!checkFile(inFile,filename,engineName(),"restoreStatus")){
 	 std::cerr << "  -- Engine state remains unchanged\n";
 	 return;
   }
-  fread(&size,1,sizeof(int),fp);  // size of stored stream state
-  fread(buffer,1,size,fp);	// copy stream state to buffer
-  engine->unpack_sprng(buffer);	// retrieve state of the stream
-  fclose(fp);
+
+  inFile.read((char*)&size,sizeof(int));
+  inFile.read(buffer,size);
+
+  if(engine->unpack_sprng(buffer) == 0){
+	 std::cerr << "  -- Engine stored doesn't match current Engine\n";
+	 inFile.close();
+	 return;
+  }
+  inFile.close();
 }
 
 void SprngRandom::showStatus() const {
 	   std::cout << std::endl;
 	   std::cout << "----- Sprng Random engine status -----" << std::endl;
-	   std::cout << " Initial seed = " << theSeed << std::endl;
+	   std::cout << " Initial seed = "<<engine->get_rn_dbl();
+	   engine->print_rng();
 
 	   std::cout << "----------------------------------------" << std::endl;
 }
